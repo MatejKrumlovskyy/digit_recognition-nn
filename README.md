@@ -1,10 +1,10 @@
-# 🔢 Digit Recognition — Neural Network Robustness Analysis
+Digit Recognition — Neural Network Robustness Analysis
 
 A feedforward neural network trained to recognize handwritten digits (0–9) encoded as **7×4 binary grids** (28-bit vectors). The project goes beyond basic classification — it systematically analyzes **how and why models fail** under real-world conditions.
 
 ---
 
-## 📌 Project Overview
+Project Overview
 
 | Property | Details |
 |---|---|
@@ -15,7 +15,7 @@ A feedforward neural network trained to recognize handwritten digits (0–9) enc
 
 ---
 
-## 🗂️ Scripts
+Scripts
 
 | File | Description |
 |---|---|
