@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Digit Recognition — Architecture & Robustness Comparison
 =========================================================
@@ -25,7 +24,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.optimizers import Adam
 
-# ── Dataset ───────────────────────────────────────────────────────────────────
+# Dataset
 # Each digit 0–9 encoded as a 7×4 binary grid (28 bits), read row by row
 
 inputs = np.array([
@@ -44,7 +43,7 @@ inputs = np.array([
 # One-hot encoded labels
 outputs = np.eye(10)
 
-# ── Augmentation Helpers ──────────────────────────────────────────────────────
+# Augmentation Helpers
 
 def add_noise(vector, num_bits):
     """Replace `num_bits` random positions with random values (2–9)."""
@@ -60,7 +59,7 @@ def flip_bits(vector, num_flips):
         v[idx] = 1 - v[idx]
     return v
 
-# ── Experiment Configuration ──────────────────────────────────────────────────
+# Experiment Configuration
 
 architectures = [
     (32,),
@@ -72,11 +71,11 @@ architectures = [
 
 activation_functions = ['relu', 'sigmoid', 'tanh']
 
-NUM_VARIANTS   = 100  # number of random variants per noise test
-NUM_NOISY_BITS = 5    # bits affected by noise
-NUM_FLIP_BITS  = 5    # bits affected by flip
+NUM_VARIANTS   = 100  
+NUM_NOISY_BITS = 5    
+NUM_FLIP_BITS  = 5    
 
-# ── Training & Evaluation ─────────────────────────────────────────────────────
+# Training & Evaluation
 
 results = []
 
@@ -84,7 +83,6 @@ for config in architectures:
     for activation in activation_functions:
         print(f"Training: arch={config}, activation={activation}")
 
-        # Build model
         model = Sequential()
         model.add(Dense(config[0], input_dim=28, activation=activation))
         for neurons in config[1:]:
@@ -93,21 +91,17 @@ for config in architectures:
         model.compile(loss='categorical_crossentropy', optimizer=Adam(), metrics=['accuracy'])
         model.fit(inputs, outputs, epochs=50, batch_size=1, verbose=0)
 
-        # Clean accuracy
         clean_correct = sum(
             np.argmax(model.predict(np.array([x]), verbose=0)) == np.argmax(y)
             for x, y in zip(inputs, outputs)
         )
         clean_acc = (clean_correct / len(inputs)) * 100
 
-        # Noisy accuracy (tested on digit 0)
         noisy_correct = sum(
             np.argmax(model.predict(np.array([add_noise(inputs[0], NUM_NOISY_BITS)]), verbose=0)) == 0
             for _ in range(NUM_VARIANTS)
         )
         noisy_acc = (noisy_correct / NUM_VARIANTS) * 100
-
-        # Bit-flip accuracy (tested on digit 0)
         flip_correct = sum(
             np.argmax(model.predict(np.array([flip_bits(inputs[0], NUM_FLIP_BITS)]), verbose=0)) == 0
             for _ in range(NUM_VARIANTS)
@@ -122,7 +116,7 @@ for config in architectures:
             'flip_acc': flip_acc
         })
 
-# ── Results Summary ───────────────────────────────────────────────────────────
+# Results Summary
 
 print("\n" + "="*70)
 print("RESULTS SUMMARY")
@@ -133,7 +127,7 @@ for r in results:
           f"Noisy: {r['noisy_acc']:6.2f}% | "
           f"Flipped: {r['flip_acc']:6.2f}%")
 
-# ── Visualization ─────────────────────────────────────────────────────────────
+# Visualization
 
 fig, ax = plt.subplots(figsize=(13, 10))
 labels = [f"{r['config']}, {r['activation']}" for r in results]
