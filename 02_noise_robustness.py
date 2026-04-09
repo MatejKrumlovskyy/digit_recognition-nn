@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Digit Recognition — Noise Robustness Analysis
 ==============================================
@@ -17,7 +16,7 @@ import matplotlib.pyplot as plt
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 
-# ── Dataset ───────────────────────────────────────────────────────────────────
+# Dataset
 
 inputs = np.array([
     [0,1,1,0,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,0,1,1,0], # 0
@@ -33,7 +32,7 @@ inputs = np.array([
 ])
 outputs = np.eye(10)
 
-# ── Model ─────────────────────────────────────────────────────────────────────
+# Model
 
 model = Sequential([
     Dense(64, input_dim=28, activation='relu'),
@@ -43,7 +42,7 @@ model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accur
 model.fit(inputs, outputs, epochs=50, batch_size=1, verbose=0)
 print("Training complete.")
 
-# ── Noise Injection Helper ────────────────────────────────────────────────────
+# Noise Injection Helper
 
 def add_noise(vector, num_bits):
     """Replace `num_bits` random positions with random values (2–9)."""
@@ -52,11 +51,11 @@ def add_noise(vector, num_bits):
         v[idx] = np.random.randint(2, 10)
     return v
 
-# ── Evaluation ────────────────────────────────────────────────────────────────
+# Evaluation
 
 MAX_NOISY_BITS = 10
 NUM_VARIANTS   = 100
-TEST_DIGIT     = 0   # digit used for robustness testing
+TEST_DIGIT     = 0   
 
 accuracies = []
 
@@ -69,7 +68,7 @@ for n in range(0, MAX_NOISY_BITS + 1):
     accuracies.append(acc)
     print(f"Noisy bits: {n:2d} | Accuracy: {acc:.1f}%")
 
-# ── Plot ──────────────────────────────────────────────────────────────────────
+# Plot
 
 plt.figure(figsize=(8, 5))
 plt.plot(range(0, MAX_NOISY_BITS + 1), accuracies, marker='o', color='steelblue', linewidth=2)
