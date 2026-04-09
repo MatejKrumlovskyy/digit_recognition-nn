@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Digit Recognition — Shift Augmentation & Spatial Invariance
 ============================================================
@@ -16,7 +15,7 @@ import matplotlib.pyplot as plt
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 
-# ── Dataset ───────────────────────────────────────────────────────────────────
+# Dataset
 
 original_inputs = np.array([
     [0,1,1,0,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,0,1,1,0], # 0
@@ -32,7 +31,7 @@ original_inputs = np.array([
 ])
 original_outputs = np.eye(10)
 
-# ── Shift Helper ──────────────────────────────────────────────────────────────
+# Shift Helper
 
 DIRECTIONS = ['up', 'down', 'left', 'right']
 
@@ -59,7 +58,7 @@ def visualize_digit(vector, title="Digit"):
     plt.tight_layout()
     plt.show()
 
-# ── Data Augmentation ─────────────────────────────────────────────────────────
+# Data Augmentation
 
 aug_inputs, aug_outputs = [], []
 for i, vec in enumerate(original_inputs):
@@ -74,7 +73,7 @@ aug_outputs = np.array(aug_outputs)
 
 print(f"Original samples: {len(original_inputs)} → Augmented: {len(aug_inputs)}")
 
-# ── Model ─────────────────────────────────────────────────────────────────────
+# Model
 
 model = Sequential([
     Dense(64, input_dim=28, activation='relu'),
@@ -84,9 +83,9 @@ model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accur
 model.fit(aug_inputs, aug_outputs, epochs=11, batch_size=1, verbose=0)
 print("Training complete.")
 
-# ── Evaluation: Per-Direction Accuracy ───────────────────────────────────────
+# Evaluation: Per-Direction Accuracy
 
-TEST_DIGIT = 1  # digit to visualize and test
+TEST_DIGIT = 1  
 
 print(f"\nTesting shifted variants of digit {TEST_DIGIT}:")
 visualize_digit(original_inputs[TEST_DIGIT], title=f"Original digit {TEST_DIGIT}")
@@ -102,13 +101,13 @@ for d in DIRECTIONS:
     status = "✓ Correct" if correct else f"✗ Predicted {pred}"
     print(f"  Shift '{d}': {status}")
 
-# ── Summary ───────────────────────────────────────────────────────────────────
+# Summary
 
 print(f"\nPer-direction accuracy for digit {TEST_DIGIT}:")
 for d, acc in direction_accuracy.items():
     print(f"  {d:6s}: {acc:.0f}%")
 
-# ── Bar Chart ─────────────────────────────────────────────────────────────────
+# Bar Chart
 
 plt.figure(figsize=(6, 4))
 plt.bar(direction_accuracy.keys(), direction_accuracy.values(), color='mediumpurple')
