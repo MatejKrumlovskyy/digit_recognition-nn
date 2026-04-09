@@ -26,18 +26,7 @@ Scripts
 
 ---
 
-## 🧠 What Makes This Project Unique
-
-Unlike standard digit recognition, this project experimentally tests **model robustness**:
-
-- 🔊 **Noise injection** — random values replacing bits (simulates sensor noise)
-- 💥 **Bit flipping** — 0↔1 corruption at varying rates
-- ↕️ **Input shifting** — up/down/left/right spatial shifts with data augmentation
-- 🏗️ **Architecture sweep** — 5 layer configs × 3 activation functions (ReLU, Sigmoid, Tanh)
-
----
-
-## 🔧 Architectures Tested
+Architectures Tested
 
 ```
 (32,)      — 1 hidden layer, 32 neurons
@@ -51,7 +40,7 @@ Each tested with: **ReLU**, **Sigmoid**, **Tanh**
 
 ---
 
-## 📊 Key Findings
+Key Findings
 
 - Models degrade gracefully with noise — accuracy drops with more corrupted bits
 - Bit flipping is more destructive than noise injection at the same count
@@ -60,23 +49,7 @@ Each tested with: **ReLU**, **Sigmoid**, **Tanh**
 
 ---
 
-## 🚀 Getting Started
-
-```bash
-pip install -r requirements.txt
-
-# Run experiments individually:
-python 01_architecture_comparison.py
-python 02_noise_robustness.py
-python 03_bitflip_robustness.py
-python 04_shift_augmentation.py
-```
-
-Results (graphs) are automatically saved to the `results/` folder.
-
----
-
-## 👤 Author
+Author
 
 **Matej Krumlovský** — FEI STU Bratislava  
 [matejkrumlovsky8@gmail.com](mailto:matejkrumlovsky8@gmail.com)
